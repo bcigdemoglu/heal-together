@@ -1,3 +1,8 @@
+# Critical Links
+
+DB at Baserow.io: https://baserow.io/database/83536/table/227602/374517
+FE at Netlify: https://app.netlify.com/sites/fantastic-parfait-6db553/overview
+
 # Next + Netlify Starter
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/46648482-644c-4c80-bafb-872057e51b6b/deploy-status)](https://app.netlify.com/sites/next-dev-starter/deploys)
