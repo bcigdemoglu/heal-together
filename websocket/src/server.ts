@@ -2,7 +2,7 @@ import http from "http";
 import express from "express";
 import WebSocket from "ws";
 
-import { nanoid } from "nanoid/non-secure";
+import { v4 as uuidv4 } from "uuid";
 
 const app = express();
 const server = http.createServer(app);
@@ -11,7 +11,7 @@ const wss = new WebSocket.Server({ server });
 let activeHealers = 0;
 
 wss.on("connection", (ws: WebSocket) => {
-  ws.send(nanoid());
+  ws.send(uuidv4());
 
   activeHealers++;
   console.log(`New connection, active healers: ${activeHealers}`);
@@ -26,7 +26,7 @@ wss.on("connection", (ws: WebSocket) => {
 });
 
 app.get("/", (req, res) => {
-  res.json({ response: nanoid(), activeHealers });
+  res.json({ response: uuidv4(), activeHealers });
 });
 
 app.get("/healthz", (req, res) => {

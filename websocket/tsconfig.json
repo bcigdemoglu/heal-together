@@ -1,7 +1,4 @@
 {
-  "include": [
-    "./src/*"
-  ],
   "compilerOptions": {
     "outDir": "./dist",
     "strict": true,
@@ -10,5 +7,10 @@
     ],
     "esModuleInterop": true,
     "target": "ES2022",
-  }
+    "skipLibCheck": true,
+  },
+  "include": [
+    "./src/*"
+  ],
+  "exclude": ["node_modules"]
 }
