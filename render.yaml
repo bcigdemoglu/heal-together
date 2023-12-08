@@ -1,0 +1,11 @@
+services:
+- type: web
+  name: heal-together-backend
+  runtime: node
+  rootDir: websocket
+  buildCommand: yarn; yarn build
+  startCommand: yarn start
+  healthCheckPath: /healthz
+  envVars:
+    - key: PORT
+      value: 3001

@@ -1,0 +1,14 @@
+{
+  "include": [
+    "./src/*"
+  ],
+  "compilerOptions": {
+    "outDir": "./dist",
+    "strict": true,
+    "lib": [
+      "esnext"
+    ],
+    "esModuleInterop": true,
+    "target": "ES2022",
+  }
+}
