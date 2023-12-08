@@ -1,7 +1,9 @@
 # Critical Links
 
-DB at Baserow.io: https://baserow.io/database/83536/table/227602/374517
-FE at Netlify: https://app.netlify.com/sites/fantastic-parfait-6db553/overview
+- App: https://fantastic-parfait-6db553.netlify.app
+- DB at Baserow.io: https://baserow.io/database/83536/table/227602/374517
+- FE at Netlify: https://app.netlify.com/sites/fantastic-parfait-6db553/overview
+- CSS: tailwind.config.ts
 
 # Next + Netlify Starter
 
