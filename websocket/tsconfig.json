@@ -1,16 +1,14 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
+    "rootDir": "./src",
     "strict": true,
-    "lib": [
-      "esnext"
-    ],
+    "lib": ["esnext"],
     "esModuleInterop": true,
-    "target": "ES2022",
-    "skipLibCheck": true,
+    "target": "es2022",
+    "module": "commonjs",
+    "sourceMap": true,
+    "skipLibCheck": true
   },
-  "include": [
-    "./src/*"
-  ],
   "exclude": ["node_modules"]
 }
