@@ -1,6 +1,7 @@
 import WebSocket from "ws";
 
-const ws = new WebSocket("ws://localhost:3001");
+const WSURL = process.env.WSURL || "ws://localhost:3001";
+const ws = new WebSocket(WSURL);
 
 ws.on("open", () => {
   console.log("Connected to server");

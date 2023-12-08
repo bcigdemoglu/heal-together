@@ -11,19 +11,29 @@ const wss = new WebSocket.Server({ server });
 let activeHealers = 0;
 
 wss.on("connection", (ws: WebSocket) => {
-  ws.send(uuidv4());
+  ws.send(JSON.stringify({id: uuidv4()}));
 
   activeHealers++;
   console.log(`New connection, active healers: ${activeHealers}`);
+  broadcastActiveHealers();
 
   ws.on("message", (message: any) => {
-    ws.send(message);
+    ws.send(JSON.stringify({message}));
   });
   ws.on("close", () => {
     activeHealers--;
     console.log(`Connection closed, active healers: ${activeHealers}`);
+    broadcastActiveHealers();
   });
 });
+
+function broadcastActiveHealers(): void {
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify({ activeHealers }));
+    }
+  });
+}
 
 app.get("/", (req, res) => {
   res.json({ response: uuidv4(), activeHealers });

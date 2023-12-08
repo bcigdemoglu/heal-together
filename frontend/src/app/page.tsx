@@ -1,7 +1,32 @@
+"use client";
+
 import Image from "next/image";
 import Head from "next/head";
+import { useEffect, useState } from "react";
+
+interface WebSocketMessage {
+  activeHealers: number;
+}
 
 export default function Home() {
+  const [activeHealers, setActiveHealers] = useState<number>(0);
+
+  useEffect(() => {
+    // const ws = new WebSocket("ws://localhost:3001");
+    const ws = new WebSocket("wss://heal-together-backend.onrender.com");
+
+    ws.onmessage = (event: MessageEvent) => {
+      const data: WebSocketMessage = JSON.parse(event.data);
+      if (data.activeHealers !== undefined) {
+        setActiveHealers(data.activeHealers);
+      }
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, []);
+
   return (
     <>
       <Head>
@@ -21,7 +46,7 @@ export default function Home() {
           <div className="w-4/5 h-4/5 flex justify-center items-center">
             <Image
               src={
-                "https://qph.cf2.quoracdn.net/main-qimg-e6b6e69ff7ea0b523db2909b7391005c-pjlq"
+                "https://i.ibb.co/vmH0Vng/Whats-App-Image-2023-12-08-at-23-33-52.jpg"
               }
               alt="SoulImage"
               width={0}
@@ -40,7 +65,7 @@ export default function Home() {
         {/* Footer */}
         <footer className="bg-gray-800 p-4 grid grid-cols-3 text-center">
           <div className="flex justify-center items-center">
-            <span>Active Healers 1</span>
+            <span>Active Healers {activeHealers}</span>
           </div>
           <div className="flex justify-center items-center">
             <Image

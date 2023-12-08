@@ -7,7 +7,8 @@
     "build": "npx tsc",
     "start": "node dist/server.js",
     "dev": "nodemon src/server.ts",
-    "client": "nodemon src/client.ts"
+    "client": "nodemon src/client.ts",
+    "prod-client": "cross-env WSURL='wss://heal-together-backend.onrender.com' nodemon src/client.ts"
   },
   "author": "",
   "license": "ISC",
@@ -16,6 +17,7 @@
     "@types/node": "^20.10.4",
     "@types/uuid": "^9.0.7",
     "@types/ws": "^8.5.10",
+    "cross-env": "^7.0.3",
     "nodemon": "^3.0.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"

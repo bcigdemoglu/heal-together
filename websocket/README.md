@@ -2,8 +2,16 @@
 
 Following guide https://medium.com/@vitaliykorzenkoua/working-with-websocket-in-node-js-using-typescript-1aebb8a06bd6
 
-Local server: http://localhost:3001
-Local websocket: ws://localhost:3001
+Public:
+
+- Public URL: [heal-together-backend.onrender.com](https://heal-together-backend.onrender.com)
+- Public WS: wss://heal-together-backend.onrender.com
+- Backend Logs: [dashboard.render.com](https://dashboard.render.com/web/srv-clpm8map0o1s73ban9q0/logs)
+
+Local:
+
+- Local server: http://localhost:3001
+- Local websocket: ws://localhost:3001
 
 Start dev server with:
 
@@ -23,6 +31,12 @@ Start test client with:
 
 ```
 yarn client
+```
+
+Connect to prod client:
+
+```
+yarn prod-client
 ```
 
 In client expect to see message:
