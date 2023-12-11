@@ -7,6 +7,7 @@ Public:
 - Public URL: [heal-together-backend.onrender.com](https://heal-together-backend.onrender.com)
 - Public WS: wss://heal-together-backend.onrender.com
 - Backend Logs: [dashboard.render.com](https://dashboard.render.com/web/srv-clpm8map0o1s73ban9q0/logs)
+- DB at Baserow.io: https://baserow.io/database/83536/table/227602/374517
 
 Local:
 
