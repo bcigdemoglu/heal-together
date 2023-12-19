@@ -275,6 +275,11 @@ io.on('connection', (socket) => {
 
   socket.on('faith', (faith: number) => {
     const socketFaith = verifyFaithEnum(faith);
+    let oldFaith = socket.data.faith;
+    if (oldFaith && oldFaith !== socketFaith) {
+      // remove from existing faith if present
+      updateSSActiveHealers(sSBF, oldFaith, socket.id, false);
+    }
     socket.data.faith = socketFaith;
     updateSSActiveHealers(sSBF, socketFaith, socket.id);
     console.log(

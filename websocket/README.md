@@ -58,7 +58,7 @@ Websocket at ws://localhost:3001
 New connection, active healers: 1
 ```
 
-UML for API /getHealRequest
+UML for API /genHealRequest
 
 ```mermaid
 sequenceDiagram
@@ -74,9 +74,9 @@ sequenceDiagram
         DB-->>Server: confirm update
         Server-->>Client: serverStateByFaith[faith].currentHealRequest
     else serverStateByFaith[faith].currentHealRequest is defined
-        alt healStartedAt < 2.22 minutes
+        alt healStartedAt < 3.33 minutes
             Server-->>Client: serverStateByFaith[faith].currentHealRequest
-        else healStartedAt >= 2.22 minutes
+        else healStartedAt >= 3.33 minutes
             Server->>DB: finalizeHealRequest(faith)
             DB-->>Server: confirm end
             Server->>DB: fetchNextHealRequest(faith)
