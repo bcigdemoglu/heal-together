@@ -20,6 +20,7 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: allowedOrigins,
+    credentials: true,
   })
 );
 app.use(express.json());
@@ -28,7 +29,7 @@ const httpServer = createServer(app);
 const io = new SocketIOServer(httpServer, {
   cors: {
     origin: allowedOrigins,
-    methods: ['GET', 'POST'],
+    credentials: true,
   },
 });
 

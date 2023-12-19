@@ -7,11 +7,13 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    height: {
-      svh: '100svh',
-    },
     container: {
       center: true,
+    },
+    extend: {
+      height: {
+        svh: '100svh',
+      },
     },
   },
   plugins: [],

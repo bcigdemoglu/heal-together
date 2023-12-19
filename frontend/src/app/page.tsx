@@ -1,10 +1,11 @@
 'use client';
 
 import Image from 'next/image';
+import { io } from 'socket.io-client';
 import { useEffect, useState } from 'react';
 
-interface WebSocketMessage {
-  activeHealers: number;
+interface SocketMessage {
+  totalActiveHealers: number;
 }
 
 export default function Home() {
@@ -12,31 +13,40 @@ export default function Home() {
 
   useEffect(() => {
     // const ws = new WebSocket("ws://localhost:3001");
-    const ws = new WebSocket('wss://heal-together-backend.onrender.com');
+    // const ws = new WebSocket('wss://heal-together-backend.onrender.com');
+    const socket = io(process.env.NEXT_PUBLIC_BACKEND_URL || '');
+    console.log(process.env.NEXT_PUBLIC_BACKEND_URL);
 
-    ws.onmessage = (event: MessageEvent) => {
-      const data: WebSocketMessage = JSON.parse(event.data);
-      if (data.activeHealers !== undefined) {
-        setActiveHealers(data.activeHealers);
-      }
-    };
+    socket.on('activeHealers', (arg: SocketMessage) => {
+      const { totalActiveHealers } = arg;
+      setActiveHealers(totalActiveHealers);
+    });
 
-    return () => {
-      ws.close();
-    };
+    socket.emit('faith', 3);
+
+    // ws.onmessage = (event: MessageEvent) => {
+    //   const data: WebSocketMessage = JSON.parse(event.data);
+    //   if (data.activeHealers !== undefined) {
+    //     setActiveHealers(data.activeHealers);
+    //   }
+    // };
+
+    // return () => {
+    //   ws.close();
+    // };
   }, []);
 
   return (
     <>
-      <div id='Full section' className='h-svh flex flex-col'>
+      <div id='Full section' className='flex h-svh flex-col'>
         {/* Header */}
         <header className='bg-gray-800 p-4 text-center'>
           <h1 className='text-lg font-bold'>Focus your positive thoughts</h1>
         </header>
 
         {/* Middle */}
-        <main className='relative flex flex-1 items-center justify-center'>
-          <div className='flex h-4/5 w-4/5 items-center justify-center'>
+        <main className='flex flex-1 items-center justify-center'>
+          <div className='h-4/5 relative flex w-4/5 items-center justify-center'>
             <Image
               src={
                 'https://i.ibb.co/vmH0Vng/Whats-App-Image-2023-12-08-at-23-33-52.jpg'
@@ -46,9 +56,8 @@ export default function Home() {
               height={0}
               sizes='100vh'
               style={{
-                width: '100%',
-                height: 'auto',
-                maxHeight: '100%',
+                height: '100%',
+                width: 'auto',
                 objectFit: 'contain',
               }}
             />
