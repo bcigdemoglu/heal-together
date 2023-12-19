@@ -57,3 +57,33 @@ Server at localhost:3001
 Websocket at ws://localhost:3001
 New connection, active healers: 1
 ```
+
+UML for API /getHealRequest
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Server
+    participant DB
+
+    Client->>Server: GET /getHealRequest {faith}
+    alt serverStateByFaith[faith].currentHealRequest is undefined
+        Server->>DB: fetchNextHealRequest(faith)
+        DB-->>Server: nextHealRequest
+        Server->>DB: updateHealStartedAt(nextHealRequest)
+        DB-->>Server: confirm update
+        Server-->>Client: serverStateByFaith[faith].currentHealRequest
+    else serverStateByFaith[faith].currentHealRequest is defined
+        alt healStartedAt < 2.22 minutes
+            Server-->>Client: serverStateByFaith[faith].currentHealRequest
+        else healStartedAt >= 2.22 minutes
+            Server->>DB: finalizeHealRequest(faith)
+            DB-->>Server: confirm end
+            Server->>DB: fetchNextHealRequest(faith)
+            DB-->>Server: nextHealRequest
+            Server->>DB: updateHealStartedAt(nextHealRequest)
+            DB-->>Server: confirm update
+            Server-->>Client: serverStateByFaith[faith].currentHealRequest
+        end
+    end
+```

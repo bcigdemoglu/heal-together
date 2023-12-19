@@ -13,3 +13,5 @@ yarn; yarn build; yarn dev
 ifconfig | grep "inet " | grep -v 127.0.0.1 | awk '{print "http://"$2":3000"}'
 # Access the link on mobile device
 ```
+
+CSS idea: https://www.letgo.com/item/ince-iscilikli-masif-koltuk-takimi-1-uclu-4-tekli-2-mermer-sehpa-iid-1671864942#item-gallery
