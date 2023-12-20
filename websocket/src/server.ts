@@ -14,8 +14,9 @@ dotenv.config({ path: '.env.local' });
 const app = express();
 
 const allowedOrigins = [
-  'http://fantastic-parfait-6db553.netlify.app',
+  'https://fantastic-parfait-6db553.netlify.app',
   'http://localhost:3000',
+  /192.168.*/,
 ];
 app.use(
   cors({
@@ -34,7 +35,8 @@ const io = new SocketIOServer(httpServer, {
 });
 
 /* 3 minutes 33 seconds */
-const EXPIRATION_DURATION = 3 * 60 * 1000 + 33 * 1000;
+const DEFAULT_EXPIRATION_DURATION = 3 * 60 * 1000 + 33 * 1000;
+// const DEFAULT_EXPIRATION_DURATION = 5 * 1000; // 5 seconds
 
 const baserow = new Baserow({
   apiKey: process.env.BASEROW_DB_TOKEN,
@@ -47,8 +49,9 @@ interface HealRequestItem {
   requesterNote: string;
   imageLink: string;
   createdAt: string;
-  healStartedAt: string | undefined;
+  healStartedAt: string;
   healEndedAt: string | undefined;
+  expirationDuration: number;
   maxActiveHealers: number;
   priority: number;
   faith: FAITH_ENUM;
@@ -79,7 +82,7 @@ const sS = (): ServerState => ({
   currentHealRequest: undefined,
   lastUpdatedAt: '',
   lastBackedUpAt: '',
-  expirationDuration: EXPIRATION_DURATION,
+  expirationDuration: DEFAULT_EXPIRATION_DURATION,
 });
 
 enum FAITH_ENUM {
@@ -229,12 +232,12 @@ function updateSSHealRequest(
 //     });
 // }
 
-function fiveMinutesPassedSinceLastBackup(lastBackupISOString: string) {
-  const lastBackupDate = new Date(lastBackupISOString);
-  const expirationDate = new Date(Date.now() - EXPIRATION_DURATION); // 5 minutes in milliseconds
+// function fiveMinutesPassedSinceLastBackup(lastBackupISOString: string) {
+//   const lastBackupDate = new Date(lastBackupISOString);
+//   const expirationDate = new Date(Date.now() - EXPIRATION_DURATION); // 5 minutes in milliseconds
 
-  return lastBackupDate < expirationDate;
-}
+//   return lastBackupDate < expirationDate;
+// }
 
 // function safelyParseStateJSON(ssJSON: string): ServerState {
 //   let parsedServerState;
@@ -352,6 +355,7 @@ function baserowRecordToHealRequestItem(
     priority: record.getNumberValue('priority'),
     faith: parseInt(record.getStringValue('faith').split('_').pop() || '0', 10),
     Active: Boolean(record.getNumberValue('Active')),
+    expirationDuration: DEFAULT_EXPIRATION_DURATION,
   };
 }
 
@@ -430,7 +434,7 @@ function isHealRequestExpired(healRequest: HealRequestItem): boolean {
     throw new Error('Heal has not started, internal error');
   }
   const healStartedAt = new Date(healRequest.healStartedAt);
-  const expirationDate = new Date(Date.now() - EXPIRATION_DURATION);
+  const expirationDate = new Date(Date.now() - healRequest.expirationDuration);
 
   return healStartedAt <= expirationDate;
 }
