@@ -37,21 +37,44 @@ interface HealRequestItem {
   Active: boolean;
   expirationDuration: number;
 }
+const faith = FAITH_ENUM.CHRISTIAN;
+
+const fetchHealRequest = async (
+  isConnected: boolean,
+  faith: FAITH_ENUM,
+  backendUrl: string,
+  setHealRequest: (data: HealRequestItem) => any
+): Promise<void> => {
+  if (!isConnected) {
+    console.debug('Not connected, do not attempt');
+    return;
+  }
+
+  try {
+    const url = new URL('genHealRequest', backendUrl);
+    url.searchParams.set('faith', faith.toString());
+
+    const response = await fetch(url.toString());
+    const data = (await response.json()) as HealRequestItem;
+    console.debug('Fetched heal request');
+    setHealRequest(data);
+  } catch (error) {
+    console.error('Error fetching heal request:', error);
+  }
+};
+
+const healEndTime = (hR: HealRequestItem): number =>
+  new Date(hR.healStartedAt).getTime() + hR.expirationDuration;
+const healExpired = (hR: HealRequestItem): boolean =>
+  Date.now() > healEndTime(hR);
 
 export default function HealPage() {
-  const faith = FAITH_ENUM.CHRISTIAN;
-
   const [activeHealers, setActiveHealers] = useState<number>(0);
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [healRequest, setHealRequest] = useState<HealRequestItem>();
   const [timeRemaning, setTimeRemaining] = useState('');
   const [isCardFlipped, setIsCardFlipped] = useState(false);
   const flipCard = () => setIsCardFlipped(!isCardFlipped);
-
-  const healEndTime = (hR: HealRequestItem): number =>
-    new Date(hR.healStartedAt).getTime() + hR.expirationDuration;
-  const healExpired = (hR: HealRequestItem): boolean =>
-    Date.now() > healEndTime(hR);
 
   /**
    * The defaultUrl is set to the local network IP (e.g., 192.168.x.x:PORT) instead of localhost:PORT.
@@ -68,28 +91,6 @@ export default function HealPage() {
     return url.toString();
   };
 
-  const fetchHealRequest = async (
-    isConnected: boolean,
-    faith: FAITH_ENUM
-  ): Promise<void> => {
-    if (!isConnected) {
-      console.debug('Not connected, do not attempt');
-      return;
-    }
-
-    try {
-      const url = new URL('genHealRequest', getBackendUrl());
-      url.searchParams.set('faith', faith.toString());
-
-      const response = await fetch(url.toString());
-      const data = (await response.json()) as HealRequestItem;
-      console.debug('Fetched heal request');
-      setHealRequest(data);
-    } catch (error) {
-      console.error('Error fetching heal request:', error);
-    }
-  };
-
   useEffect(() => {
     const backendUrl = getBackendUrl();
     console.debug(backendUrl);
@@ -103,7 +104,7 @@ export default function HealPage() {
     socket.on('connect', async () => {
       setIsConnected(true);
       console.debug('Healing active');
-      await fetchHealRequest(true, faith); // Initial fetch of healRequest
+      await fetchHealRequest(true, faith, backendUrl, setHealRequest); // Initial fetch of healRequest
     });
     socket.on('disconnect', async () => {
       setIsConnected(false);
@@ -119,7 +120,12 @@ export default function HealPage() {
     if (healRequest) {
       const intervalId = setInterval(async () => {
         if (healExpired(healRequest)) {
-          await fetchHealRequest(isConnected, faith);
+          await fetchHealRequest(
+            isConnected,
+            faith,
+            getBackendUrl(),
+            setHealRequest
+          );
         } else {
           const endTime = healEndTime(healRequest);
           const currentTime = new Date().getTime();
@@ -136,11 +142,14 @@ export default function HealPage() {
 
       return () => clearInterval(intervalId);
     }
-  }, [isConnected, healRequest, faith]);
+  }, [isConnected, healRequest]);
 
   return (
     <>
-      <div id='Full section' className='flex h-svh flex-col'>
+      <div
+        id='Full section'
+        className='flex h-svh flex-col overflow-hidden bg-black text-white'
+      >
         {/* Header */}
         <header className='bg-gray-800 p-4 text-center'>
           <h1 className='text-lg font-bold'>Focus your positive thoughts</h1>
