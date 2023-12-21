@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import { io } from 'socket.io-client';
 import { useEffect, useState } from 'react';
-import { time } from 'console';
 
 interface SocketMessage {
   totalActiveHealers: number;
@@ -43,6 +42,7 @@ export default function Home() {
   const faith = FAITH_ENUM.CHRISTIAN;
 
   const [activeHealers, setActiveHealers] = useState<number>(0);
+  const [isConnected, setIsConnected] = useState<boolean>(false);
   const [healRequest, setHealRequest] = useState<HealRequestItem>();
   const [timeRemaning, setTimeRemaining] = useState('');
   const [isCardFlipped, setIsCardFlipped] = useState(false);
@@ -73,14 +73,20 @@ export default function Home() {
     return BACKEND_URL;
   };
 
-  const fetchHealRequest = async (faith: FAITH_ENUM) => {
+  const fetchHealRequest = async (isConnected: boolean, faith: FAITH_ENUM) => {
+    if (!isConnected) {
+      console.debug('Not connected, do not attempt');
+      return;
+    }
     const genHealRequestUrl = new URL('genHealRequest', getBackendUrl());
     genHealRequestUrl.searchParams.set('faith', faith.toString());
     await fetch(genHealRequestUrl)
       .then((response) => response.json())
       .then((data: HealRequestItem) => {
+        console.debug('Fetched heal request');
         setHealRequest(data);
-      });
+      })
+      .catch((error) => console.error(error));
   };
 
   useEffect(() => {
@@ -92,12 +98,16 @@ export default function Home() {
       setActiveHealers(totalActiveHealers);
     });
 
-    socket.on('connect', () => {
-      console.log('Healing active');
+    socket.on('connect', async () => {
+      setIsConnected(true);
+      console.debug('Healing active');
+      await fetchHealRequest(true, faith); // Initial fetch of healRequest
+    });
+    socket.on('disconnect', async () => {
+      setIsConnected(false);
     });
     socket.emit('faith', faith); // Assign user to faith
 
-    fetchHealRequest(faith); // Initial fetch of healRequest
     return () => {
       socket.close();
     };
@@ -107,7 +117,7 @@ export default function Home() {
     if (healRequest) {
       const intervalId = setInterval(async () => {
         if (healExpired(healRequest)) {
-          await fetchHealRequest(faith);
+          await fetchHealRequest(isConnected, faith);
         } else {
           const endTime = healEndTime(healRequest);
           const currentTime = new Date().getTime();
@@ -124,7 +134,7 @@ export default function Home() {
 
       return () => clearInterval(intervalId);
     }
-  }, [healRequest, faith]);
+  }, [isConnected, healRequest, faith]);
 
   return (
     <>
@@ -161,7 +171,7 @@ export default function Home() {
                 <div className='absolute inset-0 flex items-center overflow-y-auto bg-black/80 px-12 text-center text-lg text-slate-200 [transform:rotateY(180deg)] [backface-visibility:hidden]'>
                   <div id='soulText' className='h-full'>
                     {healRequest.name}: {healRequest.healthCondition}{' '}
-                    {healRequest.requesterNote} {'amen '.repeat(200)}
+                    {healRequest.requesterNote} {'amen '.repeat(400)}
                   </div>
                 </div>
               </div>
