@@ -15,6 +15,7 @@ const app = express();
 
 const allowedOrigins = [
   'https://fantastic-parfait-6db553.netlify.app',
+  'https://heal-together.vercel.app/',
   'http://localhost:3000',
   /192.168.*/,
 ];
