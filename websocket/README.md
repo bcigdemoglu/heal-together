@@ -1,6 +1,6 @@
 # Websocket Express Server using Typescript
 
-Following guide https://medium.com/@vitaliykorzenkoua/working-with-websocket-in-node-js-using-typescript-1aebb8a06bd6
+Followed guide https://medium.com/@vitaliykorzenkoua/working-with-websocket-in-node-js-using-typescript-1aebb8a06bd6
 
 Public:
 

@@ -3,6 +3,9 @@
 import Image from 'next/image';
 import { io } from 'socket.io-client';
 import { useEffect, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHouse, faDoorOpen } from '@fortawesome/free-solid-svg-icons';
+import Link from 'next/link';
 
 interface SocketMessage {
   totalActiveHealers: number;
@@ -65,8 +68,7 @@ const fetchHealRequest = async (
 
 const healEndTime = (hR: HealRequestItem): number =>
   new Date(hR.healStartedAt).getTime() + hR.expirationDuration;
-const healExpired = (hR: HealRequestItem): boolean =>
-  Date.now() > healEndTime(hR);
+const healExpired = (hR: HealRequestItem): boolean => Date.now() > healEndTime(hR);
 
 export default function HealPage() {
   const [activeHealers, setActiveHealers] = useState<number>(0);
@@ -84,9 +86,7 @@ export default function HealPage() {
    * from the 192.168.* subnet, ensuring cross-origin access from various local devices.
    */
   const getBackendUrl = () => {
-    const url = new URL(
-      process.env.NEXT_PUBLIC_BACKEND_URL || window.location.origin
-    );
+    const url = new URL(process.env.NEXT_PUBLIC_BACKEND_URL || window.location.origin);
     url.port = process.env.NEXT_PUBLIC_BACKEND_PORT || url.port;
     return url.toString();
   };
@@ -120,12 +120,7 @@ export default function HealPage() {
     if (healRequest) {
       const intervalId = setInterval(async () => {
         if (healExpired(healRequest)) {
-          await fetchHealRequest(
-            isConnected,
-            faith,
-            getBackendUrl(),
-            setHealRequest
-          );
+          await fetchHealRequest(isConnected, faith, getBackendUrl(), setHealRequest);
         } else {
           const endTime = healEndTime(healRequest);
           const currentTime = new Date().getTime();
@@ -146,13 +141,15 @@ export default function HealPage() {
 
   return (
     <>
-      <div
-        id='Full section'
-        className='flex h-svh flex-col overflow-hidden bg-black text-white'
-      >
+      <div id='Full section' className='flex h-svh flex-col overflow-hidden bg-black text-white'>
         {/* Header */}
-        <header className='bg-gray-800 p-4 text-center'>
-          <h1 className='text-lg font-bold'>Focus your positive thoughts</h1>
+        <header className='grid grid-cols-8 items-center justify-center bg-gray-800 p-4'>
+          <div className='col-span-1 flex items-center justify-center'>
+            <Link href='/'>
+              <FontAwesomeIcon icon={faDoorOpen} />
+            </Link>
+          </div>
+          <h1 className='col-span-6 text-center text-lg font-bold'>Focus your positive thoughts</h1>
         </header>
 
         {/* Middle */}
@@ -181,8 +178,8 @@ export default function HealPage() {
                 />
                 <div className='absolute inset-0 flex items-center overflow-y-auto bg-black/80 px-12 text-center text-lg text-slate-200 [transform:rotateY(180deg)] [backface-visibility:hidden]'>
                   <div id='soulText' className='h-full'>
-                    {healRequest.name}: {healRequest.healthCondition}{' '}
-                    {healRequest.requesterNote} {'amen '.repeat(400)}
+                    {healRequest.name}: {healRequest.healthCondition} {healRequest.requesterNote}{' '}
+                    {'amen '.repeat(400)}
                   </div>
                 </div>
               </div>
@@ -193,22 +190,13 @@ export default function HealPage() {
         {/* Footer */}
         <footer className='grid grid-cols-3 bg-gray-800 p-4 text-center'>
           <div className='flex items-center justify-center'>
-            <span>Active Healers {activeHealers}</span>
+            <span>Active Healers: {activeHealers}</span>
           </div>
           <div className='flex items-center justify-center'>
-            <Image
-              src='https://www.svgrepo.com/show/22031/home-icon-silhouette.svg'
-              alt='Home'
-              width={24}
-              height={24}
-            />
+            <FontAwesomeIcon icon={faHouse} />
           </div>
           <div className='flex items-center justify-center'>
-            {healRequest ? (
-              <span>Remaining {timeRemaning}</span>
-            ) : (
-              <span>Receiving image...</span>
-            )}
+            {healRequest ? <span>Remaining: {timeRemaning}</span> : <span>Receiving image...</span>}
           </div>
         </footer>
       </div>

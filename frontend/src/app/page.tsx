@@ -1,10 +1,12 @@
-import { Nav } from '@components/navbar/navbar';
+import {Header as Navbar} from '@components/navbar/navbar';
+import {faGhost, faBuilding} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 
 export default function Home() {
   return (
     <section>
-      <Nav />
+      <Navbar />
       <section className='body-font text-gray-600'>
         <div className='mx-auto flex max-w-7xl flex-col items-center px-5 py-24 md:flex-row'>
           <div className='mb-40 flex flex-col items-center pt-6 text-center md:ml-24 md:w-1/2 md:items-start md:text-left lg:flex-grow'>
@@ -12,8 +14,8 @@ export default function Home() {
               We are making Stunning Websites
             </h1>
             <p className='mb-4 text-lg text-gray-600 xl:w-3/4'>
-              nine4 is a free to use website template for websites made with
-              Next.js and styled with Tailwind CSS
+              nine4 is a free to use website template for websites made with Next.js and styled with
+              Tailwind CSS
             </p>
             <div className='flex justify-center'>
               <a
@@ -25,11 +27,7 @@ export default function Home() {
             </div>
           </div>
           <div className='mb-0 mr-48 sm:mb-28 sm:mr-0 md:pl-10 lg:mb-0 xl:mr-44'>
-            <img
-              className='ml-24 w-80 md:ml-1'
-              alt='iPhone-12'
-              src='/images/iPhone-12-Mockup.png'
-            ></img>
+            <FontAwesomeIcon icon={faGhost} />
           </div>
         </div>
         <section className='mx-auto'>
@@ -41,32 +39,16 @@ export default function Home() {
             </div>
             <div className='mb-16 grid grid-cols-2 gap-16 text-center lg:grid-cols-4'>
               <div className='flex items-center justify-center'>
-                <img
-                  src='/images/Google-Logo.webp'
-                  alt='Google Logo'
-                  className='h-16 greyC block object-contain'
-                ></img>
+                <FontAwesomeIcon icon={faBuilding} />
               </div>
               <div className='flex items-center justify-center'>
-                <img
-                  src='/images/Shopify-Logo.svg'
-                  alt='Shopify Logo'
-                  className='h-16 greyC block object-contain'
-                ></img>
+                <FontAwesomeIcon icon={faBuilding} />
               </div>
               <div className='flex items-center justify-center'>
-                <img
-                  src='/images/Cloudflare-Logo.svg'
-                  alt='Cloudflare Logo'
-                  className='h-16 greyC block object-contain'
-                ></img>
+                <FontAwesomeIcon icon={faBuilding} />
               </div>
               <div className='flex items-center justify-center'>
-                <img
-                  src='/images/PayPal-Logo.png'
-                  alt='Paypal Logo'
-                  className='h-16 greyC block object-contain'
-                ></img>
+                <FontAwesomeIcon icon={faBuilding} />
               </div>
             </div>
           </div>
@@ -76,7 +58,7 @@ export default function Home() {
             Less code, less effort.
           </h1>
           <h1 className='Avenir mb-8 text-center text-2xl font-semibold text-gray-600'>
-            Minify your CSS with Tailwind's built in PostCSS support.
+            Minify your CSS with Tailwind&apos;s built in PostCSS support.
           </h1>
           <div className='container mx-auto flex flex-col items-center justify-center rounded-lg '>
             <Image
