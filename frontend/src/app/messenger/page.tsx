@@ -64,11 +64,18 @@ export default function MessengerPage() {
     }
   }, [letterList]);
 
+  // TODO: FIX WHY MOBILE BUTTON DOES NOT WORK!!!!!
+  // TODO: FIX WHY MOBILE BUTTON DOES NOT WORK!!!!!
+  // TODO: FIX WHY MOBILE BUTTON DOES NOT WORK!!!!!
+  // TODO: FIX WHY MOBILE BUTTON DOES NOT WORK!!!!!
+  // TODO: FIX WHY MOBILE BUTTON DOES NOT WORK!!!!!
+  // TODO: FIX WHY MOBILE BUTTON DOES NOT WORK!!!!!
+
   return (
     <>
       <div id='Full section' className='flex flex-col bg-black text-white'>
         {/* Header */}
-        <header className='fixed top-0 z-10 grid w-full grid-cols-8 items-center justify-center bg-gray-800 p-4'>
+        <header className='fixed top-0 z-30 grid w-full grid-cols-8 items-center justify-center bg-gray-800 p-4'>
           <div className='col-span-1 flex items-center justify-center'>
             <Link href='/'>
               <FontAwesomeIcon icon={faDoorOpen} />
@@ -101,7 +108,7 @@ export default function MessengerPage() {
 
         {/* Middle */}
         <section>
-          <main className='relative flex items-center justify-center p-4 py-32'>
+          <main className='relative flex items-center justify-center p-4 pb-20 pt-32'>
             <div className='h-4/5 w-4/5 overflow-y-scroll text-sm'>
               {letterList.map(([char, opacity], index) => (
                 <span key={index} style={{opacity}}>
