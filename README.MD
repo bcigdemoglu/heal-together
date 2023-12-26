@@ -4,14 +4,14 @@
 
 Start backend
 
-```
+```bash
 cd backend
 yarn dev
 ```
 
 Start frontend
 
-```
+```bash
 cd frontend
 yarn dev
 ```
