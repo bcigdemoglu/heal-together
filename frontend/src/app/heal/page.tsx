@@ -1,10 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-import { io } from 'socket.io-client';
-import { useEffect, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faDoorOpen } from '@fortawesome/free-solid-svg-icons';
+import {io} from 'socket.io-client';
+import {useEffect, useState} from 'react';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faHouse, faDoorOpen} from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 
 interface SocketMessage {
@@ -97,7 +97,7 @@ export default function HealPage() {
     const socket = io(backendUrl);
 
     socket.on('activeHealers', (arg: SocketMessage) => {
-      const { totalActiveHealers } = arg;
+      const {totalActiveHealers} = arg;
       setActiveHealers(totalActiveHealers);
     });
 
