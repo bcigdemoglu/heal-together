@@ -101,7 +101,7 @@ export default function MessengerPage() {
 
         {/* Middle */}
         <section>
-          <main className='relative flex items-center justify-center p-4 pt-32'>
+          <main className='relative flex items-center justify-center p-4 py-32'>
             <div className='h-4/5 w-4/5 overflow-y-scroll text-sm'>
               {letterList.map(([char, opacity], index) => (
                 <span key={index} style={{opacity}}>
