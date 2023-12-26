@@ -2,9 +2,10 @@
 
 # Critical Links
 
-- App: https://fantastic-parfait-6db553.netlify.app
+- Netlify App: https://fantastic-parfait-6db553.netlify.app
 - FE at Netlify: https://app.netlify.com/sites/fantastic-parfait-6db553/overview
-- CSS: tailwind.config.ts
+- Vercel App: https://heal-together.vercel.app/
+- FE at Vercel: https://vercel.com/bcigdemoglu/heal-together
 
 # Testing on locahost mobile device:
 
