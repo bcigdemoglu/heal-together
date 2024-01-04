@@ -12,8 +12,15 @@ type Letter = [string, number];
 /** Word is of type [string, opacity=1] */
 type Word = [string, number];
 
+/** staring opacity */
 const DEFAULT_OPACITY = 0;
-const DEFAULT_SPEED = 100;
+/** words per second */
+const DEFAULT_SPEED = 20;
+
+// TODO: ADD RANDOM COLORING
+// TODO: ADD RANDOM COLORING
+// TODO: ADD RANDOM COLORING
+// const DEFAULT_COLOR = RGB(255, 255, 255);
 
 function generateRandomLetter(numbersAllowed = false): Letter {
   const numbers = '0123456789';
@@ -82,6 +89,9 @@ export default function MessengerPage() {
   // TODO: FIX WHY MOBILE BUTTON DOES NOT WORK!!!!!
   // TODO: FIX WHY MOBILE BUTTON DOES NOT WORK!!!!!
   // TODO: FIX WHY MOBILE BUTTON DOES NOT WORK!!!!!
+  // TODO: IT IS DUE TO SCROLLING BEHAVIOR!!!!!!!!
+  // TODO: IT IS DUE TO SCROLLING BEHAVIOR!!!!!!!!
+  // TODO: IT IS DUE TO SCROLLING BEHAVIOR!!!!!!!!
 
   return (
     <>
