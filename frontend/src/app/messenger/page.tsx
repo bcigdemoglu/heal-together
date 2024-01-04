@@ -4,20 +4,31 @@ import {useEffect, useState} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faHouse, faDoorOpen, faPlay, faStop} from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
+import word_list from '../../../public/basic_english_850.json';
 
 /** Letter is of type [character, opacity=1] */
 type Letter = [string, number];
 
+/** Word is of type [string, opacity=1] */
+type Word = [string, number];
+
+const DEFAULT_OPACITY = 0;
+const DEFAULT_SPEED = 100;
+
 function generateRandomLetter(numbersAllowed = false): Letter {
-  const defaultOpacity = 1;
   const numbers = '0123456789';
   const letters = 'abcdefghijklmnopqrstuvwxyz \n'; // Define allowed characters
   const allowed = letters + (numbersAllowed ? numbers : []);
   const randomIndex = Math.floor(Math.random() * allowed.length); // Generate random index
-  return [allowed[randomIndex], defaultOpacity]; // Return the character at the random index
+  return [allowed[randomIndex], DEFAULT_OPACITY]; // Return the character at the random index
 }
 
-const isUserAtBottom = (threshold = 100) => {
+function generateRandomWord(): Word {
+  const randomIndex = Math.floor(Math.random() * word_list.length); // Generate random index
+  return [word_list[randomIndex] + ' ', DEFAULT_OPACITY]; // Return the character at the random index
+}
+
+const isUserAtBottom = (threshold = 40) => {
   const {innerHeight} = window;
   const {scrollTop, offsetHeight} = document.documentElement;
 
@@ -26,22 +37,23 @@ const isUserAtBottom = (threshold = 100) => {
 
 const scrollToBottom = () => {
   window.scroll({
-    top: document.body.scrollHeight,
+    top: Math.max(document.body.scrollHeight, document.documentElement.clientHeight),
+    // top: 100000,
     left: 0,
-    // behavior: 'smooth', // Optional: for smooth scrolling
+    behavior: 'auto', // Optional: for smooth scrolling
   });
 };
 
 export default function MessengerPage() {
-  const [letterSpeed, setLetterSpeed] = useState(50);
+  const [letterSpeed, setLetterSpeed] = useState(1000 / DEFAULT_SPEED);
   const [stop, setStop] = useState(false);
-  const [letterList, setLetterList] = useState<Letter[]>([]);
+  const [dataList, setDataList] = useState<Letter[] | Word[]>([]);
 
   useEffect(() => {
     if (!stop) {
       const interval = setInterval(() => {
-        const newLetter = generateRandomLetter();
-        setLetterList((prevList) => {
+        const newLetter = generateRandomWord();
+        setDataList((prevList) => {
           const randomIndex = Math.floor(Math.random() * prevList.length);
           const randomOpacity = Math.random();
           const newList = [...prevList];
@@ -62,7 +74,7 @@ export default function MessengerPage() {
     if (isUserAtBottom()) {
       scrollToBottom();
     }
-  }, [letterList]);
+  }, [dataList]);
 
   // TODO: FIX WHY MOBILE BUTTON DOES NOT WORK!!!!!
   // TODO: FIX WHY MOBILE BUTTON DOES NOT WORK!!!!!
@@ -84,35 +96,28 @@ export default function MessengerPage() {
           <h1 className='col-span-6 text-center text-lg font-bold'>Focus on the spirits</h1>
           <div className='col-span-8 flex items-center justify-center'>
             <span>Speed: {1000 / letterSpeed} letters per sec</span>
-            <button
-              onClick={() => setLetterSpeed((prevSpeed) => prevSpeed / 2)}
-              className='mx-2 rounded-lg bg-gray-900 px-2 py-1 text-white'
-            >
-              +
+            <button onClick={() => setLetterSpeed((prevSpeed) => prevSpeed / 2)}>
+              <span className='mx-2 block rounded-lg bg-gray-900 px-2 py-1 text-white'>+</span>
             </button>
-            <button
-              onClick={() => setLetterSpeed((prevSpeed) => prevSpeed * 2)}
-              className='mx-2 rounded-lg bg-gray-900 px-2 py-1 text-white'
-            >
-              -
+            <button onClick={() => setLetterSpeed((prevSpeed) => prevSpeed * 2)}>
+              <span className='mx-2 block rounded-lg bg-gray-900 px-2 py-1 text-white '>-</span>
             </button>
-            <button
-              className='mx-2 rounded-lg bg-gray-900 px-2 py-1 text-white'
-              onClick={() => setStop(!stop)}
-            >
+            <button onClick={() => setStop(!stop)}>
               {/* If stop true faPlay, if stop false faStop */}
-              {stop ? <FontAwesomeIcon icon={faPlay} /> : <FontAwesomeIcon icon={faStop} />}
+              <span className='mx-2 block rounded-lg bg-gray-900 px-2 py-1 text-white'>
+                {stop ? <FontAwesomeIcon icon={faPlay} /> : <FontAwesomeIcon icon={faStop} />}
+              </span>
             </button>
           </div>
         </header>
 
         {/* Middle */}
         <section>
-          <main className='relative flex items-center justify-center p-4 pb-20 pt-32'>
-            <div className='h-4/5 w-4/5 overflow-y-scroll text-sm'>
-              {letterList.map(([char, opacity], index) => (
+          <main className='inset-0 flex min-h-[svh] items-center justify-center bg-black px-4 pb-20 pt-32 md:px-20'>
+            <div className='overflow-y-scroll text-sm'>
+              {dataList.map(([data, opacity], index) => (
                 <span key={index} style={{opacity}}>
-                  {char}
+                  {data}
                 </span>
               ))}
             </div>
@@ -122,9 +127,9 @@ export default function MessengerPage() {
         {/* Footer */}
         <footer className='fixed bottom-0 grid w-full grid-cols-3 bg-gray-800 p-4 text-center'>
           <div className='flex items-center justify-center'></div>
-          <div className='flex items-center justify-center'>
+          <Link href='/' className='flex items-center justify-center'>
             <FontAwesomeIcon icon={faHouse} />
-          </div>
+          </Link>
           <div className='flex items-center justify-center'></div>
         </footer>
       </div>

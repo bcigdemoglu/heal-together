@@ -47,15 +47,20 @@ export function Header() {
             <ul className='flex flex-grow flex-col items-center justify-end md:flex-row'>
               <NavLink href='/'>About Us</NavLink>
               <NavLink href='/'>Request</NavLink>
-              <li>
-                <Link
-                  className='text-md mt-2 inline-flex  rounded-lg bg-gray-900 px-4 py-2 font-medium text-white transition duration-500 ease-in-out md:ml-4 md:mt-0'
-                  href='/heal'
-                >
-                  <span>Start Healing</span>
-                  <FontAwesomeIcon className='pl-2 text-gray-400' icon={faArrowRight} />
-                </Link>
-              </li>
+              <Link
+                href='/heal'
+                className='text-md mt-2 inline-flex  rounded-lg bg-gray-900 px-4 py-2 font-medium text-white transition duration-500 ease-in-out md:ml-4 md:mt-0'
+              >
+                <span>Start Healing</span>
+                <FontAwesomeIcon className='pl-2 text-gray-400' icon={faArrowRight} />
+              </Link>
+              <Link
+                href='/messenger'
+                className='text-md mt-2 inline-flex  rounded-lg bg-gray-900 px-4 py-2 font-medium text-white transition duration-500 ease-in-out md:ml-4 md:mt-0'
+              >
+                <span>Messenger</span>
+                <FontAwesomeIcon className='pl-2 text-gray-400' icon={faArrowRight} />
+              </Link>
             </ul>
           </nav>
         </div>
