@@ -22,7 +22,7 @@ type GenType = 'letter' | 'word';
 
 const NUMBERS = '0123456789';
 // Allowed characters
-const LETTERS = 'abcdefghijklmnopqrstuvwxyz ';
+const LETTERS = 'abcdefghijklmnopqrstuvwxyz  ';
 /** words per second */
 const DEFAULT_SPEED = 10;
 
