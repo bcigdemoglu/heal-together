@@ -113,17 +113,11 @@ export default function MessengerPage() {
     };
   }, [speed, stop, genType, channel, setDataList]);
 
-  useEffect(() => {
-    if (isUserAtBottom()) {
-      scrollToBottom();
-    }
-  }, [dataList]);
-
-  useEffect(() => {
-    if (isUserAtBottom()) {
-      scrollToBottom();
-    }
-  }, [dataList]);
+  // useEffect(() => {
+  //   if (isUserAtBottom()) {
+  //     scrollToBottom();
+  //   }
+  // }, [dataList]);
 
   // TODO: FIX WHY MOBILE BUTTON DOES NOT WORK!!!!!
   // TODO: FIX WHY MOBILE BUTTON DOES NOT WORK!!!!!
